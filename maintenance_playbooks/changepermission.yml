@@ -1,0 +1,9 @@
+---
+- hosts: salleinfo
+  tasks:
+     - name: Change file ownership, group and permissions
+       file:
+         path: /home/salleinfo/test.sh
+         owner: salleinfo
+         group: salleinfo
+         mode: '777'

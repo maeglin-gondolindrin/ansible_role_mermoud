@@ -1,0 +1,7 @@
+---
+- hosts: salleinfo
+  remote_user: ecole
+  become: yes
+
+  roles:
+    - update

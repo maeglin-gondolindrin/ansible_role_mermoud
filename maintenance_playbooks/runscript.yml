@@ -1,0 +1,6 @@
+---
+ - hosts: salleinfo
+   become: true
+   tasks:
+     - name: Run script
+       command: /home/salleinfo/sshkey.sh

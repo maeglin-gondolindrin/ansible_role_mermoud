@@ -1,0 +1,6 @@
+---
+- hosts: salleinfo
+  become: yes
+  tasks:
+    - name: Unconditionally reboot the machine with all defaults
+      reboot:

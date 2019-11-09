@@ -1,0 +1,10 @@
+---
+- hosts: salleinfo
+  tasks:
+    - name: Copy file with owner and permissions
+      copy:
+        src: /home/server/ansible_mermoud/chpass.sh
+        dest: /home/salleinfo/chpass.sh
+        owner: salleinfo
+        group: salleinfo
+        mode: '644'

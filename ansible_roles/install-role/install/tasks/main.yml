@@ -1,0 +1,132 @@
+---
+# tasks file for ./install
+
+    - name: Update APT
+      apt:
+        update_cache: yes
+
+    - name: Upgrade system packages
+      apt:
+        upgrade: dist
+
+    - name: Add veyon ppa
+      apt_repository:
+        repo: ppa:veyon/stable
+        state: present
+
+    - name: Install Stuff
+      apt:
+        update_cache: yes
+        name: ['vim-gtk3', 'nfs-common', 'gcompris', 'vlc', 'veyon', 'mpv'] 
+        state: latest
+
+
+
+
+    - name: Creative Loop
+      user:
+        name: "{{ item.name }}"
+        state: present
+        groups: "{{ item.groups }}"
+        password: "{{ item.name | password_hash('sha512', 'F485') }}"
+        createhome: yes
+        shell: /bin/bash
+      become: true
+      with_items:
+        - { name: 'cpa', groups: 'ecole' }
+        - { name: 'cpb', groups: 'ecole' }
+        - { name: 'cpc', groups: 'ecole' }
+        - { name: 'ce1a', groups: 'ecole' }
+        - { name: 'ce1b', groups: 'ecole' }
+        - { name: 'ce1c', groups: 'ecole' }
+        - { name: 'ce2a', groups: 'ecole' }
+        - { name: 'ce2b', groups: 'ecole' }
+        - { name: 'ce2c', groups: 'ecole' }
+        - { name: 'cm1a', groups: 'ecole' }
+        - { name: 'cm1b', groups: 'ecole' }
+        - { name: 'cm1c', groups: 'ecole' }
+        - { name: 'cm2a', groups: 'ecole' }
+        - { name: 'cm2b', groups: 'ecole' }
+        - { name: 'cm2c', groups: 'ecole' }
+        - { name: 'clis', groups: 'ecole' }
+        - { name: 'ce2-cm1', groups: 'ecole' }
+
+
+
+    - name: append fstab
+      blockinfile:
+        path: /etc/fstab
+        backup: yes
+        block: |
+          192.168.2.10:/mnt/classes/cpa       /home/cpa/Documents/  nfs  auto,noatime,nolock,bg,nfsvers=3,intr,tcp,actimeo=1800 0 0
+ 
+          192.168.2.10:/mnt/classes/cpb       /home/cpb/Documents/  nfs  auto,noatime,nolock,bg,nfsvers=3,intr,tcp,actimeo=1800 0 0
+ 
+          192.168.2.10:/mnt/classes/cpc       /home/cpc/Documents/  nfs  auto,noatime,nolock,bg,nfsvers=3,intr,tcp,actimeo=1800 0 0
+ 
+ 
+          192.168.2.10:/mnt/classes/ce1a       /home/ce1a/Documents/ nfs  auto,noatime,nolock,bg,nfsvers=3,intr,tcp,actimeo=1800 0 0
+ 
+          192.168.2.10:/mnt/classes/ce1b       /home/ce1b/Documents/ nfs  auto,noatime,nolock,bg,nfsvers=3,intr,tcp,actimeo=1800 0 0
+ 
+          192.168.2.10:/mnt/classes/ce1c       /home/ce1c/Documents/ nfs  auto,noatime,nolock,bg,nfsvers=3,intr,tcp,actimeo=1800 0 0
+ 
+          192.168.2.10:/mnt/classes/ce2a       /home/ce2a/Documents/ nfs  auto,noatime,nolock,bg,nfsvers=3,intr,tcp,actimeo=1800 0 0
+ 
+          192.168.2.10:/mnt/classes/ce2b       /home/ce2b/Documents/ nfs  auto,noatime,nolock,bg,nfsvers=3,intr,tcp,actimeo=1800 0 0
+ 
+          192.168.2.10:/mnt/classes/ce2c       /home/ce2c/Documents/ nfs  auto,noatime,nolock,bg,nfsvers=3,intr,tcp,actimeo=1800 0 0
+   
+          192.168.2.10:/mnt/classes/cm1a       /home/cm1a/Documents/ nfs  auto,noatime,nolock,bg,nfsvers=3,intr,tcp,actimeo=1800 0 0
+           
+          192.168.2.10:/mnt/classes/cm1b       /home/cm1b/Documents/ nfs  auto,noatime,nolock,bg,nfsvers=3,intr,tcp,actimeo=1800 0 0
+ 
+          192.168.2.10:/mnt/classes/cm1c       /home/cm1c/Documents/ nfs  auto,noatime,nolock,bg,nfsvers=3,intr,tcp,actimeo=1800 0 0
+ 
+          192.168.2.10:/mnt/classes/cm2a       /home/cm2a/Documents/ nfs  auto,noatime,nolock,bg,nfsvers=3,intr,tcp,actimeo=1800 0 0
+ 
+          192.168.2.10:/mnt/classes/cm2b       /home/cm2b/Documents/ nfs  auto,noatime,nolock,bg,nfsvers=3,intr,tcp,actimeo=1800 0 0
+
+          192.168.2.10:/mnt/classes/cm2c       /home/cm2c/Documents/ nfs  auto,noatime,nolock,bg,nfsvers=3,intr,tcp,actimeo=1800 0 0
+ 
+          192.168.2.10:/mnt/classes/clis       /home/clis/Documents/ nfs  auto,noatime,nolock,bg,nfsvers=3,intr,tcp,actimeo=1800 0 0
+ 
+          192.168.2.10:/mnt/classes/ce2-cm1       /home/ce2-cm1/Documents/ nfs  auto,noatime,nolock,bg,nfsvers=3,intr,tcp,actimeo=1800 0 0
+
+
+
+
+    - name: create directory
+      file:
+              path: /etc/dconf/profile
+              state: directory
+    
+    - name: copy file
+      copy:
+        src: ./user
+        dest: /etc/dconf/profile/user
+        owner: root
+        group: root
+
+
+    - name: create dir
+      file:
+          path: /etc/dconf/db/msb.d
+          state: directory
+
+    - name: create db
+      copy:
+        src: ./00_msb_settings
+        dest: /etc/dconf/db/msb.d
+        owner: root
+        group: root
+
+    - name: refresh dock
+      command: dconf update
+      
+    - name: refresh dock2
+      command: chmod a+rx -R /etc/dconf
+
+
+
+...

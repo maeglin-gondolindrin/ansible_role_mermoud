@@ -1,0 +1,7 @@
+---
+- hosts: salleinfo
+  become: true
+  tasks: 
+    - name: Update  APT package manager repositories cache
+      apt:
+       update_cache: yes

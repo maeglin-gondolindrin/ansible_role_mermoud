@@ -1,0 +1,12 @@
+---
+# tasks file for update
+
+- name: Update APT on Debian based systems
+  apt:
+    update_cache: yes
+
+
+- name: Upgrade system packages
+  apt:
+    upgrade: dist
+

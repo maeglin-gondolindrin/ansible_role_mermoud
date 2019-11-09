@@ -1,0 +1,4 @@
+#This line allows the user to change the default favorites later.
+user-db:user
+#This line defines a system database named msb
+system-db:msb

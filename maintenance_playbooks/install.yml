@@ -1,0 +1,8 @@
+---
+- hosts: salleinfo
+  become: true
+  tasks:
+    - name: Install mpv
+      apt:
+        name: gnome-mpv
+        state: latest

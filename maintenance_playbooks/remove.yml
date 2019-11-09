@@ -1,0 +1,8 @@
+---
+- hosts: salleinfo
+  become: true
+  tasks:
+    - name: Remove xxx package
+      apt:
+       name: xxx
+       state: absent

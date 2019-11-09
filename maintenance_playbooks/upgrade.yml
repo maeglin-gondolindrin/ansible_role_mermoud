@@ -1,0 +1,7 @@
+---
+- hosts: salleinfo
+  become: true
+  tasks: 
+    - name: Upgrade installed packages
+      apt:
+       upgrade: dist

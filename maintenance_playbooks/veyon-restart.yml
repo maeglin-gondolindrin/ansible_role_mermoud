@@ -1,0 +1,6 @@
+---
+- hosts: salleinfo
+  become: true
+  tasks:
+    - name: Restart veyon service
+      command: veyon-cli service restart
